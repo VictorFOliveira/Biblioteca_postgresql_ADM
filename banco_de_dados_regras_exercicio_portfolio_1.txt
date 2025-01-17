@@ -1,0 +1,95 @@
+Objetivo:
+Criar um banco de dados para gerenciar informações de uma biblioteca, que inclua livros, usuários, empréstimos, reservas e transações. O foco estará em garantir eficiência, integridade e segurança dos dados.
+
+parte 1: 
+
+a. Tabela Livros
+Descrição: Armazena as informações dos livros da biblioteca.
+id (PK): Identificador único para cada livro.
+titulo: Título do livro.
+autor: Autor do livro.
+genero: Gênero ou categoria do livro.
+data_publicacao: Data de publicação do livro.
+isbn: Código ISBN único para cada livro.
+disponibilidade: Indica se o livro está disponível para empréstimo (TRUE/FALSE).
+
+parte 2 : 
+b. Tabela Usuarios
+Descrição: Armazena os dados dos usuários da biblioteca.
+id (PK): Identificador único para cada usuário.
+nome: Nome do usuário.
+email: Endereço de e-mail.
+telefone: Número de telefone.
+endereco: Endereço do usuário.
+
+parte 3 :
+c. Tabela Emprestimos
+Descrição: Registra os empréstimos de livros feitos pelos usuários.
+id (PK): Identificador único do empréstimo.
+usuario_id (FK): Refere-se ao usuário que está fazendo o empréstimo.
+livro_id (FK): Refere-se ao livro que está sendo emprestado.
+data_emprestimo: Data em que o livro foi emprestado.
+data_devolucao: Data prevista para a devolução do livro.  
+
+parte 4:
+d. Tabela Reservas
+Descrição: Armazena as reservas feitas pelos usuários para livros.
+id (PK): Identificador único da reserva.
+usuario_id (FK): Refere-se ao usuário que está fazendo a reserva.
+livro_id (FK): Refere-se ao livro que está sendo reservado.
+data_reserva: Data em que a reserva foi realizada.
+status: Status da reserva (pendente, cancelada, retirada).
+ 
+parte 5: 
+e. Tabela Multas
+Descrição: Armazena as multas associadas aos empréstimos em atraso.
+id (PK): Identificador único da multa.
+emprestimo_id (FK): Refere-se ao empréstimo em que a multa foi gerada.
+valor_multa: Valor da multa por atraso.
+status: Status da multa (paga, pendente). 
+
+
+parte 6: 
+
+2. Regras de Negócio:
+2.1. Empréstimos e Devoluções
+Regra: Um usuário pode emprestar um livro apenas se ele estiver disponível.
+Regra: Se o usuário devolver o livro depois da data de devolução, ele será multado.
+Regra: Ao devolver o livro, ele será marcado como disponível novamente.
+2.2. Reservas
+Regra: Um usuário pode reservar um livro, mas somente se ele não estiver disponível no momento.
+Regra: A reserva será automaticamente desfeita após um período de 30 dias caso o livro não seja retirado pelo usuário.
+Regra: Quando o livro for devolvido, ele deve ser disponibilizado para o próximo usuário que tenha feito uma reserva.
+2.3. Multas
+Regra: O valor da multa será calculado com base no número de dias em atraso multiplicado por uma taxa fixa por dia.
+Exemplo de cálculo: Valor da multa = dias em atraso * taxa diária.
+Regra: As multas devem ser pagas para que o usuário possa fazer novos empréstimos. 
+
+
+parte 7: 
+3. Possíveis Triggers:
+3.1. Trigger de Disponibilidade do Livro (Ao Empréstimo)
+Quando um livro é emprestado, ele deve ser marcado como indisponível. Essa trigger deve ser acionada após a inserção de um novo empréstimo. 
+
+parte8: 
+3.2. Trigger de Multa (Ao Atraso)
+Quando um empréstimo está atrasado, a trigger calcula e insere automaticamente uma multa. 
+
+parte 9:
+
+3.3. Trigger de Devolução de Livro
+Quando o livro for devolvido, ele deve ser marcado como disponível novamente. 
+
+parte 10: 
+4. Índices Possíveis:
+4.1. Índice para ISBN
+Objetivo: Acelerar as buscas por livros usando o ISBN. 
+
+parte11: 
+4.2. Índice para Livros Disponíveis
+Objetivo: Acelerar a consulta de livros disponíveis para empréstimo. 
+
+parte 12:
+
+4.3. Índice para Empréstimos por Data de Devolução
+Objetivo: Melhorar o desempenho das consultas de livros emprestados com base na data de devolução (para ver quais livros estão atrasados).
